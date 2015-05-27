@@ -33,12 +33,13 @@ app.post('/*', function(req, res) {
     var clean = /\u201C|\u201D|\u201E|\u201F|\u2033|\u2036/g;
     var text = dirty.replace(clean, '"');
 
-    var name = data.name;
-    var url = data.shortUrl;
-
     postToTrello(listId, command, text, function(err, data) {
 		if (err) throw err;
       console.log(data);
+
+      var name = data.name;
+      var url = data.shortUrl;
+
       res.status(200).send('Card ' + name + 'created here: <' + url + '>');
     });
 });
