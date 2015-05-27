@@ -36,7 +36,7 @@ app.post('/*', function(req, res) {
     postToTrello(listId, command, text, function(err, data) {
 		if (err) throw err;
       console.log(data);
-      res.status(200).send('created card' + name);
+      res.status(200).send('created card' + text);
     });
 });
 
