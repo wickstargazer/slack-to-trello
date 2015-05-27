@@ -9,12 +9,10 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 function postToTrello(listId, command, text, cb) {
-    var straighten = /\u201C|\u201D|\u201E|\u201F|\u2033|\u2036/g;
-    var clean = text.replace(straighten, '"');
     var regex = /"(.*?)"/g;
 
-    var name = regex.exec(clean);
-    var desc = regex.exec(clean);
+    var name = regex.exec(text);
+    var desc = regex.exec(text);
 
     if (name == null || desc == null) {
       throw new Error('Oh crepe! Format is ' + command + ' "card name" "card description"');
@@ -31,7 +29,9 @@ function postToTrello(listId, command, text, cb) {
 app.post('/*', function(req, res) {
     var listId = req.params[0];
     var command = req.body.command,
-        text = req.body.text;
+        dirty = req.body.text,
+        clean = /\u201C|\u201D|\u201E|\u201F|\u2033|\u2036/g,
+        text = dirty.replace(clean, '"');
 
     postToTrello(listId, command, text, function(err, data) {
 		if (err) throw err;
