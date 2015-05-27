@@ -28,15 +28,18 @@ function postToTrello(listId, command, text, cb) {
 
 app.post('/*', function(req, res) {
     var listId = req.params[0];
-    var command = req.body.command,
-        dirty = req.body.text,
-        clean = /\u201C|\u201D|\u201E|\u201F|\u2033|\u2036/g,
-        text = dirty.replace(clean, '"');
+    var command = req.body.command;
+    var dirty = req.body.text;
+    var clean = /\u201C|\u201D|\u201E|\u201F|\u2033|\u2036/g;
+    var text = dirty.replace(clean, '"');
+
+    var name = data.name;
+    var url = data.shortUrl;
 
     postToTrello(listId, command, text, function(err, data) {
 		if (err) throw err;
       console.log(data);
-      res.status(200).send('created card' + text);
+      res.status(200).send('Card ' + name + 'created here: <' + url + '>');
     });
 });
 
