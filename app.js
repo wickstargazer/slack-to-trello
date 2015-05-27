@@ -9,8 +9,8 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 function postToTrello(listId, command, text, cb) {
-    var con = /\u201C|\u201D|\u201E|\u201F|\u2033|\u2036/g;
-    var clean = text.replace(/"([^"]*)"/g, "“$1”");
+    var straighten = /\u201C|\u201D|\u201E|\u201F|\u2033|\u2036/g;
+    var clean = text.replace(straighten, '"');
     var regex = /"(.*?)"/g;
 
     var name = regex.exec(clean);
