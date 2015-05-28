@@ -9,6 +9,10 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
  
 function postToTrello(listId, command, text, cb) {
+  if (text == undefined) {
+    throw new Error('Format is ' + command + ' name | description(optional)');
+  }
+
   var name_and_desc = text.split('|');
 
 	var card_data = {
@@ -37,7 +41,7 @@ app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Sla
 // error handler
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(400).send(err.message);
+  res.status(400).send(err.stack);
 });
  
 app.listen(port, function () {
