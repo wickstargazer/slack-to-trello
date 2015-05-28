@@ -9,17 +9,11 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
  
 function postToTrello(listId, command, text, cb) {
-    var regex = /"(.*?)"/g;
-    var name = regex.exec(text);
-    var desc = regex.exec(text);
-
-    if (name == null || desc == null) {
-    	throw new Error('Oh hamburgers! Format is /' + command + ' "card name" "card description"');
-    }
+  var name_and_desc = text.split('|');
 
 	var card_data = {
-		"name" : name[1],
-		"desc" : desc[1]
+		"name" : name_and_desc.shift(),
+		"desc" : name_and_desc.shift()
 	};
 
 	trello.post("/1/lists/" + listId + "/cards", card_data, cb);
