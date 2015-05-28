@@ -23,13 +23,13 @@ function postToTrello(listId, command, text, cb) {
 	trello.post("/1/lists/" + listId + "/cards", card_data, cb);
 }
 
-app.post('/*', function(req, res) {
+app.post('/*', function(req, res, next) {
   	var listId = req.params[0];
     var command = req.body.command,
         text = req.body.text;
 
     postToTrello(listId, command, text, function(err, data) {
-		  if (err) throw err;
+		  if (err) return next(err);
   		console.log(data);
   		res.status(200).send('created card');
     });
@@ -41,7 +41,7 @@ app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Sla
 // error handler
 app.use(function (err, req, res, next) {
   //console.error(err.stack);
-  res.status(400).send('Error: ' + err.message);
+  res.status(400).send('Error2: ' + err.message);
 });
  
 app.listen(port, function () {
