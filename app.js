@@ -9,7 +9,7 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
  
 function postToTrello(listId, command, text, cb) {
-  if (text == undefined) {
+  if (text == undefined || text == null || text == "") {
     throw new Error('Format is ' + command + ' name | description(optional)');
   }
 
@@ -29,7 +29,7 @@ app.post('/*', function(req, res) {
         text = req.body.text;
 
     postToTrello(listId, command, text, function(err, data) {
-		if (err) throw err;
+		  if (err) throw err;
   		console.log(data);
   		res.status(200).send('created card');
     });
@@ -40,8 +40,8 @@ app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Sla
  
 // error handler
 app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(200).send('Error: ' + err.message);
+  //console.error(err.stack);
+  res.status(400).send('Error: ' + err.message);
 });
  
 app.listen(port, function () {
