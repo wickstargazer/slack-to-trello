@@ -41,7 +41,7 @@ app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Sla
 // error handler
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(400).send(err.stack);
+  res.status(200).send('Error: ' + err.message);
 });
  
 app.listen(port, function () {
