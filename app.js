@@ -63,8 +63,8 @@ app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Sla
 
 app.get('/list', function (req, res) {
     console.log(req);
-    var i = request.url.indexOf('?');
-    var query = request.url.substr(i + 1);
+    var i = req.url.indexOf('?');
+    var query = req.url.substr(i + 1);
     trello.get('/1/lists/' + req.query.listid + '/cards' + '?' + query, function (err, data) {
         if (err) throw err;
         console.log(data);
