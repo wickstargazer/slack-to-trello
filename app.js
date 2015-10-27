@@ -101,7 +101,7 @@ app.get('/search', function (req, res) {
                 });
             }
 
-            res.status(200).send(checklist);
+            res.status(200).send(checklistids);
         });
 
         //res.status(200).send(data);
