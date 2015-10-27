@@ -96,7 +96,7 @@ app.get('/search', function (req, res) {
             var checklist = [];
 
             function onEach(complete, item, i) {
-                trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
+                trello.get('/1/checklists/' + item, function (err, data) {
                     if (err) throw err;
                     console.log(data);
                     var items = data.checkItems;
