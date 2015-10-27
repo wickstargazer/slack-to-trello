@@ -62,12 +62,34 @@ app.post('/*', function(req, res, next) {
 app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Slack and Trello!') });
 
 app.get('/list', function (req, res) {
-    console.log(req);
     var i = req.url.indexOf('?');
     var query = req.url.substr(i + 1);
     trello.get('/1/lists/' + req.query.listid + '/cards' + '?' + query, function (err, data) {
         if (err) throw err;
         console.log(data);
+
+
+
+
+
+        res.status(200).send(data);
+    });
+});
+
+app.get('/search', function (req, res) {
+    var i = req.url.indexOf('?');
+    var query = req.url.substr(i + 1);
+    trello.get('/1/search/' + req.query.query + '?' + query, function (err, data) {
+        if (err) throw err;
+        console.log(data);
+
+        var cardId = data.cards[0].id
+
+        trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
+            if (err) throw err;
+            console.log(data);
+            res.status(200).send(data);
+        });
 
         res.status(200).send(data);
     });
