@@ -88,7 +88,20 @@ app.get('/search', function (req, res) {
         trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
             if (err) throw err;
             console.log(data);
-            res.status(200).send(data);
+
+            var checklistids = data.idChecklists;
+            var checklist = [];
+            for (var i = 0; i < checklistids.lenght; i++) {
+
+                trello.get('/1/checklists/' + checklistids[i], function (err, data) {
+                    if (err) throw err;
+                    console.log(data);
+                    var items = data.checkItems;
+                    checklist.push(items);
+                });
+            }
+
+            res.status(200).send(checklist);
         });
 
         //res.status(200).send(data);
