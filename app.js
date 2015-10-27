@@ -92,17 +92,14 @@ app.get('/search', function (req, res) {
             var checklistids = data.idChecklists;
             var checklist = [];
             for (var i = 0; i < checklistids.length; i++) {
-
-                trello.get('/1/checklists/' + checklistids[i], function (err, data) {
-                    if (err) throw err;
-                    console.log(data);
-                    var items = data.checkItems;
-                    checklist.push(items);
-                    res.status(200).send(checklist);
-                });
+                var request = require('sync-request');
+                var res = request('GET', '/1/checklists/' + checklistids[i]);
+                console.log(res);
+                var items = res.checkItems;
+                checklist.push(items);
             }
-
-            //res.status(200).send(checklist);
+            res.status(200).send(checklist);
+            
         });
 
         //res.status(200).send(data);
