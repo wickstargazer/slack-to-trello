@@ -79,7 +79,7 @@ app.get('/list', function (req, res) {
 app.get('/search', function (req, res) {
     var i = req.url.indexOf('?');
     var query = req.url.substr(i + 1);
-    trello.get('/1/search/' + req.query.query + '?' + query, function (err, data) {
+    trello.get('/1/search/?' + query, function (err, data) {
         if (err) throw err;
         console.log(data);
 
