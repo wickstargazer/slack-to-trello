@@ -83,15 +83,15 @@ app.get('/search', function (req, res) {
         if (err) throw err;
         console.log(data);
 
-        //var cardId = data.cards[0].id
+        var cardId = data.cards[0].id
 
-        //trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
-        //    if (err) throw err;
-        //    console.log(data);
-        //    res.status(200).send(data);
-        //});
+        trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
+            if (err) throw err;
+            console.log(data);
+            res.status(200).send(data);
+        });
 
-        res.status(200).send(data);
+        //res.status(200).send(data);
     });
 });
 
