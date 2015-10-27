@@ -66,7 +66,7 @@ app.get('/list', function (req, res) {
         if (err) throw err;
         console.log(data);
 
-        res.status(200).send('List Success' + data);
+        res.status(200).send(data);
     });
 });
 
