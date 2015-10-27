@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var Trello = require('node-trello');
 var trello = new Trello(process.env.TRELLO_KEY, process.env.TRELLO_TOKEN);
+var syncrequest = require('sync-request');
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -92,8 +93,8 @@ app.get('/search', function (req, res) {
             var checklistids = data.idChecklists;
             var checklist = [];
             for (var i = 0; i < checklistids.length; i++) {
-                //var request = require('sync-request');
-                //var res = request('GET', '/1/checklists/' + checklistids[i]);
+                
+                var res = syncrequest('GET', '/1/checklists/' + checklistids[i]);
                 //console.log(res.getBody('utf-8'));
                 //var items = JSON.parse(res.body.toString('utf-8')).checkItems;
                 //checklist.push(items);
