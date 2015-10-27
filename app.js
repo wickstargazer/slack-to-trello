@@ -66,9 +66,7 @@ app.get('/list', function (req, res) {
         if (err) throw err;
         console.log(data);
 
-        var name = data.name;
-        var url = data.shortUrl;
-        res.status(200).send('Card "' + name + '" created here: <' + url + '>');
+        res.status(200).send('List Success');
     });
 });
 
