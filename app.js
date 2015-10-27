@@ -94,7 +94,7 @@ app.get('/search', function (req, res) {
             for (var i = 0; i < checklistids.length; i++) {
                 var request = require('sync-request');
                 var res = request('GET', '/1/checklists/' + checklistids[i]);
-                console.log(res.getBody('utf-8'));
+                //console.log(res.getBody('utf-8'));
                 //var items = JSON.parse(res.body.toString('utf-8')).checkItems;
                 //checklist.push(items);
                 res.status(200).send(checklist);
