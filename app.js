@@ -62,7 +62,7 @@ app.post('/*', function(req, res, next) {
 app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Slack and Trello!') });
 
 app.get('/list', function (req, res) {
-    trello.get('/1/lists/' + req.query.listid, function (err, data) {
+    trello.get('/1/lists/' + req.query.listid + '/board', function (err, data) {
         if (err) throw err;
         console.log(data);
 
