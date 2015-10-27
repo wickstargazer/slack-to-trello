@@ -92,8 +92,8 @@ app.get('/search', function (req, res) {
             var checklistids = data.idChecklists;
             var checklist = [];
             for (var i = 0; i < checklistids.length; i++) {
-                var request = require('sync-request');
-                var res = request('GET', '/1/checklists/' + checklistids[i]);
+                //var request = require('sync-request');
+                //var res = request('GET', '/1/checklists/' + checklistids[i]);
                 //console.log(res.getBody('utf-8'));
                 //var items = JSON.parse(res.body.toString('utf-8')).checkItems;
                 //checklist.push(items);
