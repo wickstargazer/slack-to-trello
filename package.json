@@ -7,7 +7,8 @@
   "dependencies": {
   	"express": "*",
     "body-parser": "*",
-    "node-trello": "*"
+    "node-trello": "*",
+	"sync-request": "*"
   },
   "env": {
   	"TRELLO_KEY" : {
