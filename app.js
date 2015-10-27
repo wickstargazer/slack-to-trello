@@ -91,7 +91,7 @@ app.get('/search', function (req, res) {
 
             var checklistids = data.idChecklists;
             var checklist = [];
-            for (var i = 0; i < checklistids.lenght; i++) {
+            for (var i = 0; i < checklistids.length; i++) {
 
                 trello.get('/1/checklists/' + checklistids[i], function (err, data) {
                     if (err) throw err;
