@@ -98,10 +98,11 @@ app.get('/search', function (req, res) {
                     console.log(data);
                     var items = data.checkItems;
                     checklist.push(items);
+                    res.status(200).send(checklist);
                 });
             }
 
-            res.status(200).send(checklistids);
+            //res.status(200).send(checklist);
         });
 
         //res.status(200).send(data);
