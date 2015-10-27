@@ -8,7 +8,8 @@
   	"express": "*",
     "body-parser": "*",
     "node-trello": "*",
-	"sync-request": "*"
+	"es6-promise": "*",
+	"forallasync" : "*"
   },
   "env": {
   	"TRELLO_KEY" : {
