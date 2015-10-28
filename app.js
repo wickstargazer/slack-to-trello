@@ -80,9 +80,14 @@ app.get('/list', function (req, res) {
 });
 
 app.get('/search', function (req, res) {
+
+    var command = req.body.command,
+    name = req.body.text,
+    user_name = req.body.user_name;
+
     var i = req.url.indexOf('?');
     var query = req.url.substr(i + 1);
-    trello.get('/1/search/?' + query, function (err, data) {
+    trello.get('/1/search/?query=' + name, function (err, data) {
         if (err) throw err;
         console.log(data);
 
