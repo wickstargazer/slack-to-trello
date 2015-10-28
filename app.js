@@ -28,29 +28,7 @@ function postToTrello(listId, command, text, user_name, cb) {
 
 function postChecklistItemsToTrello(query, text, user_name, res) {
 
-    var checkitem_data = {
-        'name': text + ' (@' + user_name + ')',
-    };
-
-    trello.get('/1/search/?query=' + query, function (err, data) {
-
-        if (err) throw err;
-
-        var cardId = data.cards[0].id
-        trello.get('/1/cards/' + cardId, function (err, data) {
-            if (err) throw err;
-            var checklistids = data.idChecklists;
-            trello.post('/1/checklists/' + checklistids[0] + '/checkItems', checkitem_data, , function (err, data) {
-                if (err) throw err;
-                console.log(data);
-
-                var name = data.name;
-                var url = data.shortUrl;
-                res.status(200).send('Item "' + name + '" created here: <' + url + '>');
-            });
-        });
-       
-    });
+    res.status(200).send('ok');
 
 
 }
