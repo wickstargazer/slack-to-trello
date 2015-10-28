@@ -28,7 +28,29 @@ function postToTrello(listId, command, text, user_name, cb) {
 
 function postChecklistItemsToTrello(query, text, user_name, res) {
 
-    res.status(200).send('ok');
+    var checkitem_data = {
+        'name': text + ' (@' + user_name + ')'
+    };
+
+    trello.get('/1/search/?query=' + query, function (err, data) {
+
+        if (err) throw err;
+
+        var cardId = data.cards[0].id
+        trello.get('/1/cards/' + cardId, function (err, data) {
+            if (err) throw err;
+            var checklistids = data.idChecklists;
+            trello.post('/1/checklists/' + checklistids[0] + '/checkItems', checkitem_data, , function (err, data) {
+                if (err) throw err;
+                console.log(data);
+
+                var name = data.name;
+                var url = data.shortUrl;
+                res.status(200).send('Item "' + name + '" created here: <' + url + '>');
+            });
+        });
+       
+    });
 
 
 }
@@ -75,8 +97,9 @@ app.post('/*', function(req, res, next) {
   if (text.lastIndexOf('add', 0) === 0) {
       var otherparts = text.substr(5);
       var pos = text.indexOf('to');
+      var cardname = text.substring(pos + 1);
       text = text.substring(0, pos != -1 ? pos : text.length);
-      var cardname = req.url.substr(i + 1);
+      
       postChecklistItemsToTrello(cardname, text, user_name, res);
   }
   else if (text.lastIndexOf('list', 0) === 0) {
