@@ -46,8 +46,7 @@ function postChecklistItemsToTrello(query, text, user_name, res) {
 
                 var name = data.name;
                 var url = data.shortUrl;
-                res.status(200).send(data);
-                res.status(200).send('Item "' + name + '" created here: <' + url + '>');
+                res.status(200).send('Item "' + name + '" created under card: <' + query + '>');
             });
         });
        
@@ -98,7 +97,7 @@ app.post('/*', function(req, res, next) {
   if (text.lastIndexOf('add', 0) === 0) {
       var pos = text.indexOf('to');
       if (pos == -1) {
-          res.status(200).send('Usage is ' + command + 'add description to card name)');
+          res.status(200).send('Usage is ' + command + ' add description to card name)');
       }
       var cardname = text.substring(pos + 1);
       text = text.substring(0, pos != -1 ? pos : text.length);
@@ -108,7 +107,7 @@ app.post('/*', function(req, res, next) {
       listCheckItemsByCardName(text.substr(5) ,res);
   }
   else {
-      res.status(200).send('Format is ' + command + '[add,list] name | description)');
+      res.status(200).send('Format is ' + command + ' [add,list] name | description)');
   }
 
   
