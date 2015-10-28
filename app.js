@@ -92,7 +92,7 @@ app.post('/*', function(req, res, next) {
       });
   }
   else if (text.lastIndexOf('list', 0) === 0) {
-      listCheckItemsByCardName(text.replace(/list /gi, ""));
+      listCheckItemsByCardName(text.substr(5));
   }
   else {
       res.status(200).send('Format is ' + command + '[add,list] name | description)');
