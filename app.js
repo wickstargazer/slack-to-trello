@@ -72,7 +72,7 @@ function listCheckItemsByCardName(query, res) {
                 });
             }
             forAllAsync(checklistids, onEach, maxCallsAtOnce).then(function () {
-                res.status(200).send(checklist.replace(/,/g, "\n"));
+                res.status(200).send(checklist.toString().replace(/,/g, "\n"));
             });
         });
     });
