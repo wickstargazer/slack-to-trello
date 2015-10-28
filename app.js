@@ -45,6 +45,36 @@ function postChecklistItemsToTrello(listId, command, text, user_name, cb) {
     trello.post('/1/lists/' + listId + 'checklists/checkItems', item_data, cb);
 }
 
+function listCheckItemsByCardName(query) {
+    trello.get('/1/search/?query=' + query, function (err, data) {
+        if (err) throw err;
+
+        console.log(data);
+        var cardId = data.cards[0].id
+        trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
+            if (err) throw err;
+            console.log(data);
+
+            var checklistids = data.idChecklists;
+            var checklist = [];
+
+            function onEach(complete, item, i) {
+                trello.get('/1/checklists/' + item, function (err, data) {
+                    if (err) throw err;
+                    console.log(data);
+                    var items = data.checkItems;
+                    checklist.push(items);
+                    complete();
+                });
+            }
+            forAllAsync(checklistids, onEach, maxCallsAtOnce).then(function () {
+                res.status(200).send(checklist);
+            });
+        });
+        //res.status(200).send(data);
+    });
+}
+
 app.post('/*', function(req, res, next) {
   var listId = req.params[0];
   var command = req.body.command,
@@ -84,36 +114,7 @@ app.get('/list', function (req, res) {
     });
 });
 
-function listCheckItemsByCardName(query) {
-    trello.get('/1/search/?query=' + query, function (err, data) {
-        if (err) throw err;
-        console.log(data);
 
-        var cardId = data.cards[0].id
-
-        trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
-            if (err) throw err;
-            console.log(data);
-
-            var checklistids = data.idChecklists;
-            var checklist = [];
-
-            function onEach(complete, item, i) {
-                trello.get('/1/checklists/' + item, function (err, data) {
-                    if (err) throw err;
-                    console.log(data);
-                    var items = data.checkItems;
-                    checklist.push(items);
-                    complete();
-                });
-            }
-            forAllAsync(checklistids, onEach, maxCallsAtOnce).then(function () {
-                res.status(200).send(checklist);
-            });
-        });
-        //res.status(200).send(data);
-    });
-}
 
 app.get('/search', function (req, res) {
     var i = req.url.indexOf('?');
