@@ -49,11 +49,11 @@ function listCheckItemsByCardName(query) {
     trello.get('/1/search/?query=' + query, function (err, data) {
         if (err) throw err;
 
-        console.log(data);
+       
         var cardId = data.cards[0].id
         trello.get('/1/cards/' + cardId + '?' + query, function (err, data) {
             if (err) throw err;
-            console.log(data);
+       
 
             var checklistids = data.idChecklists;
             var checklist = [];
@@ -61,7 +61,7 @@ function listCheckItemsByCardName(query) {
             function onEach(complete, item, i) {
                 trello.get('/1/checklists/' + item, function (err, data) {
                     if (err) throw err;
-                    console.log(data);
+                   
                     var items = data.checkItems;
                     checklist.push(items);
                     complete();
