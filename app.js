@@ -26,23 +26,34 @@ function postToTrello(listId, command, text, user_name, cb) {
 	trello.post('/1/lists/' + listId + '/cards', card_data, cb);
 }
 
-function postChecklistToTrello(listId, command, text, user_name, cb) {
+function postChecklistItemsToTrello(query, text, user_name, res) {
 
-    var name_and_desc = text.split('|');
-    var checklist_data = {
-        'name': name_and_desc.shift() + ' (@' + user_name + ')',
-        'desc': name_and_desc.shift()
+    var checkitem_data = {
+        'name': text + ' (@' + user_name + ')',
     };
 
-    trello.post('/1/lists/' + listId + '/checklists', checklist_data, cb);
-}
+    trello.get('/1/search/?query=' + query, function (err, data) {
 
-function postChecklistItemsToTrello(listId, command, text, user_name, cb) {
+        if (err) throw err;
 
-    var item_data = {
-        'desc': text
-    };
-    trello.post('/1/lists/' + listId + 'checklists/checkItems', item_data, cb);
+        var cardId = data.cards[0].id
+
+        trello.get('/1/cards/' + cardId, function (err, data) {
+            if (err) throw err;
+            var checklistids = data.idChecklists;
+            trello.post('/1/checklists/' + checklistids[0] + '/checkItems', checkitem_data, , function (err, data) {
+                if (err) throw err;
+                console.log(data);
+
+                var name = data.name;
+                var url = data.shortUrl;
+                res.status(200).send('Item "' + name + '" created here: <' + url + '>');
+            });
+        });
+       
+    });
+
+
 }
 
 function listCheckItemsByCardName(query, res) {
@@ -85,14 +96,11 @@ app.post('/*', function(req, res, next) {
   user_name = req.body.user_name;
 
   if (text.lastIndexOf('add', 0) === 0) {
-      postToTrello(listId, command, text, user_name, function (err, data) {
-          if (err) throw err;
-          console.log(data);
-
-          var name = data.name;
-          var url = data.shortUrl;
-          res.status(200).send('Card "' + name + '" created here: <' + url + '>');
-      });
+      var otherparts = text.substr(5);
+      var position = text.indexOf('to');
+      text = text.substring(0, position != -1 ? position : text.length);
+      var query = req.url.substr(i + 1);
+      postChecklistItemsToTrello(query, text, user_name, res)
   }
   else if (text.lastIndexOf('list', 0) === 0) {
       listCheckItemsByCardName(text.substr(5) ,res);
