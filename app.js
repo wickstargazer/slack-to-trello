@@ -28,7 +28,7 @@ function postToTrello(listId, command, text, user_name, cb) {
 
 function postChecklistItemsToTrello(query, text, user_name, res) {
 
-    var checkitem_data = {
+    var item_data = {
         'name': text + ' (@' + user_name + ')'
     };
 
@@ -40,7 +40,7 @@ function postChecklistItemsToTrello(query, text, user_name, res) {
         trello.get('/1/cards/' + cardId, function (err, data) {
             if (err) throw err;
             var checklistids = data.idChecklists;
-            trello.post('/1/checklists/' + checklistids[0] + '/checkItems', checkitem_data, , function (err, data) {
+            trello.post('/1/checklists/' + checklistids[0] + '/checkItems', item_data, function (err, data) {
                 if (err) throw err;
                 console.log(data);
 
