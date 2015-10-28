@@ -12,18 +12,18 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 function postToTrello(listId, command, text, user_name, cb) {
-  if (text == undefined || text == null || text == "") {
-    throw new Error('Format is ' + command + ' name | description(optional)');
-  }
+    if (text == undefined || text == null || text == "") {
+        throw new Error('Format is ' + command + ' name | description(optional)');
+    }
 
-  var name_and_desc = text.split('|');
+    var name_and_desc = text.split('|');
 
-	var card_data = {
-		'name' : name_and_desc.shift() + ' (@' + user_name + ')',
-		'desc' : name_and_desc.shift()
-	};
+    var card_data = {
+        'name': name_and_desc.shift() + ' (@' + user_name + ')',
+        'desc': name_and_desc.shift()
+    };
 
-	trello.post('/1/lists/' + listId + '/cards', card_data, cb);
+    trello.post('/1/lists/' + listId + '/cards', card_data, cb);
 }
 
 function postChecklistItemsToTrello(query, text, user_name, res) {
