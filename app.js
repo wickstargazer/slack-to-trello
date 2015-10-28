@@ -26,6 +26,7 @@ function postToTrello(listId, command, text, user_name, cb) {
     trello.post('/1/lists/' + listId + '/cards', card_data, cb);
 }
 
+
 function postChecklistItemsToTrello(query, text, user_name, res) {
 
     var item_data = {
