@@ -60,7 +60,14 @@ function listCheckItemsByCardName(query, res) {
                     if (err) throw err;
                    
                     var items = data.checkItems;
-                    checklist.push(items);
+                    var stringoutput = "";
+                    for (var i in items) {
+                        val = conf[i];
+                        if (val.state != 'complete') {
+                            stringoutput = val.name + ":" + val.state + ":" + val.id;
+                            checklist.push(stringoutput);
+                        }
+                    }
                     complete();
                 });
             }
