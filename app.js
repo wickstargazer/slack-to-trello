@@ -37,7 +37,6 @@ function postChecklistItemsToTrello(query, text, user_name, res) {
         if (err) throw err;
 
         var cardId = data.cards[0].id
-
         trello.get('/1/cards/' + cardId, function (err, data) {
             if (err) throw err;
             var checklistids = data.idChecklists;
@@ -97,10 +96,10 @@ app.post('/*', function(req, res, next) {
 
   if (text.lastIndexOf('add', 0) === 0) {
       var otherparts = text.substr(5);
-      var position = text.indexOf('to');
-      text = text.substring(0, position != -1 ? position : text.length);
-      var query = req.url.substr(i + 1);
-      postChecklistItemsToTrello(query, text, user_name, res)
+      var pos = text.indexOf('to');
+      text = text.substring(0, pos != -1 ? pos : text.length);
+      var cardname = req.url.substr(i + 1);
+      postChecklistItemsToTrello(cardname, text, user_name, res);
   }
   else if (text.lastIndexOf('list', 0) === 0) {
       listCheckItemsByCardName(text.substr(5) ,res);
