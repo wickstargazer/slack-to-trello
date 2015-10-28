@@ -65,14 +65,14 @@ function listCheckItemsByCardName(query, res) {
                         var val = items[i];
                         if (val.state != 'complete') {
                             stringoutput = val.name + ":" + val.state + ":" + val.id;
-                            checklist.push(stringoutput.replace(/,/g,"\n"));
+                            checklist.push(stringoutput);
                         }
                     }
                     complete();
                 });
             }
             forAllAsync(checklistids, onEach, maxCallsAtOnce).then(function () {
-                res.status(200).send(checklist);
+                res.status(200).send(checklist.replace(/,/g, "\n"));
             });
         });
     });
