@@ -62,7 +62,7 @@ function listCheckItemsByCardName(query, res) {
                     var items = data.checkItems;
                     var stringoutput = "";
                     for (var i in items) {
-                        val = conf[i];
+                        var val = items[i];
                         if (val.state != 'complete') {
                             stringoutput = val.name + ":" + val.state + ":" + val.id;
                             checklist.push(stringoutput);
