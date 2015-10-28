@@ -93,7 +93,9 @@ app.post('/*', function(req, res, next) {
   var command = req.body.command,
   text = req.body.text,
   user_name = req.body.user_name;
-
+  if (req.body.token != "KCNb3KKJPg7VN3YK1OCE09SH") {
+    res.status(200).send('Invalid Token in request!!');
+  }
   if (text.lastIndexOf('add', 0) === 0) {
       var pos = text.indexOf('to');
       if (pos == -1) {
@@ -116,23 +118,23 @@ app.post('/*', function(req, res, next) {
 // test route
 app.get('/', function (req, res) { res.status(200).send('SupportKit.io loves Slack and Trello!') });
 
-app.get('/list', function (req, res) {
-    var i = req.url.indexOf('?');
-    var query = req.url.substr(i + 1);
-    trello.get('/1/lists/' + req.query.listid + '/cards' + '?' + query, function (err, data) {
-        if (err) throw err;
-        console.log(data);
-        res.status(200).send(data);
-    });
-});
+//app.get('/list', function (req, res) {
+//    var i = req.url.indexOf('?');
+//    var query = req.url.substr(i + 1);
+//    trello.get('/1/lists/' + req.query.listid + '/cards' + '?' + query, function (err, data) {
+//        if (err) throw err;
+//        console.log(data);
+//        res.status(200).send(data);
+//    });
+//});
 
 
 
-app.get('/search', function (req, res) {
-    var i = req.url.indexOf('?');
-    var query = req.url.substr(i + 1);
-    listCheckItemsByCardName(query,res);
-});
+//app.get('/search', function (req, res) {
+//    var i = req.url.indexOf('?');
+//    var query = req.url.substr(i + 1);
+//    listCheckItemsByCardName(query,res);
+//});
 
 // error handler
 app.use(function (err, req, res, next) {
