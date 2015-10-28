@@ -81,7 +81,7 @@ app.post('/*', function(req, res, next) {
   text = req.body.text,
   user_name = req.body.user_name;
 
-  if (text.indexOf('add') != -1) {
+  if (data.lastIndexOf('add', 0) === 0) {
       postToTrello(listId, command, text, user_name, function (err, data) {
           if (err) throw err;
           console.log(data);
@@ -91,11 +91,11 @@ app.post('/*', function(req, res, next) {
           res.status(200).send('Card "' + name + '" created here: <' + url + '>');
       });
   }
-  else if (text.indexOf('list') != -1) {
+  else if (data.lastIndexOf('list', 0) === 0) {
       listCheckItemsByCardName(text.replace(/list /gi, ""));
   }
   else {
-      throw new Error('Format is ' + command + '[add,list] name | description)');
+      res.status(200).send('Format is ' + command + '[add,list] name | description)');
   }
 
   
