@@ -47,6 +47,7 @@ function postChecklistItemsToTrello(listId, command, text, user_name, cb) {
 
 function listCheckItemsByCardName(query) {
     trello.get('/1/search/?query=' + query, function (err, data) {
+        res.status(200).send(err);
         if (err) throw err;
         var cardId = data.cards[0].id
         trello.get('/1/cards/' + cardId, function (err, data) {
