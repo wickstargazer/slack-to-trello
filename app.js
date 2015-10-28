@@ -65,7 +65,7 @@ function listCheckItemsByCardName(query, res) {
                         var val = items[i];
                         if (val.state != 'complete') {
                             stringoutput = val.name + ":" + val.state + ":" + val.id;
-                            checklist.push(stringoutput);
+                            checklist.push(stringoutput.replace(/,/g,"\n"));
                         }
                     }
                     complete();
