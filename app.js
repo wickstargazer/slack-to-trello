@@ -51,14 +51,24 @@ app.post('/*', function(req, res, next) {
   text = req.body.text,
   user_name = req.body.user_name;
 
-  postToTrello(listId, command, text, user_name, function(err, data) {
-    if (err) throw err;
-    console.log(data);
+  if (text.indexOf('add') != -1) {
+      postToTrello(listId, command, text, user_name, function (err, data) {
+          if (err) throw err;
+          console.log(data);
 
-    var name = data.name;
-    var url = data.shortUrl;
-    res.status(200).send('Card "' + name + '" created here: <' + url + '>');
-  });
+          var name = data.name;
+          var url = data.shortUrl;
+          res.status(200).send('Card "' + name + '" created here: <' + url + '>');
+      });
+  }
+  else if (text.indexOf('list') != -1) {
+      listCheckItemsByCardName(text.replace(/list /gi, ""));
+  }
+  else {
+      throw new Error('Format is ' + command + '[add,list] name | description)');
+  }
+
+  
 });
 
 // test route
@@ -70,24 +80,12 @@ app.get('/list', function (req, res) {
     trello.get('/1/lists/' + req.query.listid + '/cards' + '?' + query, function (err, data) {
         if (err) throw err;
         console.log(data);
-
-
-
-
-
         res.status(200).send(data);
     });
 });
 
-app.get('/search', function (req, res) {
-
-    var command = req.body.command,
-    name = req.body.text,
-    user_name = req.body.user_name;
-
-    var i = req.url.indexOf('?');
-    var query = req.url.substr(i + 1);
-    trello.get('/1/search/?query=' + name, function (err, data) {
+function listCheckItemsByCardName(query) {
+    trello.get('/1/search/?query=' + query, function (err, data) {
         if (err) throw err;
         console.log(data);
 
@@ -109,16 +107,18 @@ app.get('/search', function (req, res) {
                     complete();
                 });
             }
-
             forAllAsync(checklistids, onEach, maxCallsAtOnce).then(function () {
                 res.status(200).send(checklist);
             });
-            
-            
         });
-
         //res.status(200).send(data);
     });
+}
+
+app.get('/search', function (req, res) {
+    var i = req.url.indexOf('?');
+    var query = req.url.substr(i + 1);
+    listCheckItemsByCardName(query);
 });
 
 // error handler
