@@ -45,10 +45,9 @@ function postChecklistItemsToTrello(listId, command, text, user_name, cb) {
     trello.post('/1/lists/' + listId + 'checklists/checkItems', item_data, cb);
 }
 
-function listCheckItemsByCardName(query) {
-    res.status(200).send('ok done');
+function listCheckItemsByCardName(query, res) {
+   
     trello.get('/1/search/?query=' + query, function (err, data) {
-       
         if (err) throw err;
         var cardId = data.cards[0].id
         trello.get('/1/cards/' + cardId, function (err, data) {
@@ -90,7 +89,7 @@ app.post('/*', function(req, res, next) {
       });
   }
   else if (text.lastIndexOf('list', 0) === 0) {
-      listCheckItemsByCardName(text.substr(5));
+      listCheckItemsByCardName(text.substr(5) ,res);
   }
   else {
       res.status(200).send('Format is ' + command + '[add,list] name | description)');
@@ -117,7 +116,7 @@ app.get('/list', function (req, res) {
 app.get('/search', function (req, res) {
     var i = req.url.indexOf('?');
     var query = req.url.substr(i + 1);
-    listCheckItemsByCardName(query);
+    listCheckItemsByCardName(query,res);
 });
 
 // error handler
